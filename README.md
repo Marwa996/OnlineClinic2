@@ -1,2 +1,2 @@
-# OnlineClinic2
-Sprint 2 of Online Clinic System
+# OnlineClinic
+Online Clinic system allows online reservations with doctors
