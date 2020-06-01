@@ -6,7 +6,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web.Mvc;
-using WebApplication1.ViewModels;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -113,8 +112,41 @@ namespace WebApplication1.Controllers
                 return View(doctor);
             }
         }
+            // GET: /Doctors/Create
+        [Authorize(Roles = "Admin")]
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: /Doctors/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more UpcomingAppointments see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "ID,Name,BirthDate,Sex,Department,Degree,UserName,Password")] DoctorModel doctor)
+        {
+
+            if (ModelState.IsValid)
+            {
+                db.Doctors.Add(doctor);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
 
 
 
+            return View(doctor);
+
+
+
+
+        }
     }
+
+
+
+  
 }
+
