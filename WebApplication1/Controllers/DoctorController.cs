@@ -39,6 +39,23 @@ namespace WebApplication1.Controllers
             }
             return View(doctors);
         }
+
+        //Doctor Availability
+        public ActionResult Availability(int id)
+        {
+            DoctorModel doctor = db.Doctors.Find(id);
+            if (doctor == null)
+            {
+                return View("Error");
+            }
+            AppointmentModel test = new AppointmentModel
+            {
+                DoctorID = id
+            };
+            ViewBag.TimeBlockHelper = new SelectList(String.Empty);
+            ViewBag.DoctorName = doctor.Name;
+            return View(test);
+        }
         // GET: /Doctors/UpcomingAppointments/5
         [Authorize(Roles = "Admin, Doctor")]
         public ActionResult UpcomingAppointments(string id, string SearchString)
