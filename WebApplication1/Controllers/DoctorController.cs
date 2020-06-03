@@ -143,6 +143,76 @@ namespace WebApplication1.Controllers
 
 
         }
+
+        // GET: /Doctors/Edit/5
+        [Authorize(Roles = "Admin, Doctor")]
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DoctorModel doctor = db.Doctors.Find(id);
+            if (doctor == null)
+            {
+                return View("Error");
+            }
+            return View(doctor);
+        }
+
+        // POST: /Doctors/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more UpcomingAppointments see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [Authorize(Roles = "Admin, Doctor")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "ID,Name,BirthDate,Sex,Department,Degree,DisableNewAppointments")] DoctorModel doctor)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(doctor).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(doctor);
+        }
+
+        // GET: /Doctors/Delete/5
+        [Authorize(Roles = "Admin")]
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            DoctorModel doctor = db.Doctors.Find(id);
+            if (doctor == null)
+            {
+                return View("Error");
+            }
+            return View(doctor);
+        }
+
+        // POST: /Doctors/Delete/5
+        [Authorize(Roles = "Admin")]
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            DoctorModel doctor = db.Doctors.Find(id);
+            db.Doctors.Remove(doctor);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 
 
